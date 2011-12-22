@@ -23,8 +23,20 @@ EOF
         end
 
         opts.on "-g", "--generate DEST", "Generate javascript and stylesheet files" do |path|
-          Scarlet::Generator.files(path)
-          exit
+          Scarlet::Generator.files(output_dir = path)
+        end
+
+        opts.on "-d", "--directory DEST", "Output directory" do |path|
+          options[:output_dir] = path
+        end
+
+        opts.on "-v", "--verbose", "Verbose output" do |path|
+          options[:verbose] = 1
+        end
+
+        opts.on "-o", "--output DEST", "Output file" do |path|
+          options[:output_dir] = File.dirname(path)
+          options[:output_file] = path
         end
 
         opts.on "-h", "--help", "Show this message" do
@@ -40,9 +52,21 @@ EOF
         end
       end
 
-      file = File.read(argv[0])
-      slideshow = Scarlet::Slideshow.new(file, options)
-      puts slideshow.render
+      if argv[0]
+        file = File.read(argv[0])
+        options[:output_dir] ||= argv[0].sub(/\.textile$/, '')
+        slideshow = Scarlet::Slideshow.new(file, options)
+        case options[:format]
+        when :html
+          output_file = options[:output_file] ||= "#{options[:output_dir]}/index.html"
+          out = File.open(output_file, "w+")
+          $stderr.puts "+ Generating #{output_file}"
+        end
+        out ||= $stdout
+        out.puts slideshow.render
+        out.close if out != $stdout
+        $stderr.puts "+ DONE."
+      end
     end
   end
 end

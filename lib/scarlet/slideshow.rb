@@ -1,14 +1,16 @@
 module Scarlet
   class Slideshow
     attr_reader :slides, :options
-    
+    attr_accessor :output_dir
+
     def initialize(enumerable, options={})
       @options = options
+      @output_dir = options[:output_dir]
       formatter = options[:format].nil? ? Scarlet::Formatter.default : Scarlet::Formatter.for(options[:format]) 
       @slides = slice(enumerable)
       @slides.each { |slide| slide.format!(formatter) }
     end
-    
+
     def render
       case @options[:format]
       when :html
@@ -29,18 +31,21 @@ module Scarlet
     
       def slice(enumerable)
         slides = []
+        slide = nil
         enumerable.lines.each do |line|
           if line.include? "!SLIDE"
-            slides << Scarlet::Slide.new
-            slides.last.classes = line.gsub("!SLIDE", "").strip
+            slide = Scarlet::Slide.new
+            slide.output_dir = output_dir
+            slides << slide
+            slide.classes = line.gsub("!SLIDE", "").strip
           elsif line.include? "!TITLE"
-            slides.last.title = line.gsub("!TITLE", "").strip
+            slide.title = line.gsub("!TITLE", "").strip
           else
-            next if slides.empty?
-            if ! slides.last.title && line =~ /^\s*h\d\.\s+(.*)$/
-              slides.last.title = $1
+            next unless slide
+            if ! slide.title && line =~ /^\s*h\d\.\s+(.*)$/
+              slide.title = $1
             end
-            slides.last.text << line
+            slide.text << line
           end
         end
         return slides

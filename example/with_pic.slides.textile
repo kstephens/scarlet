@@ -1,0 +1,27 @@
+!SLIDE
+Slide 1
+
+* Bullet 1
+* Bullet 2
+* Bullet 3
+
+!SLIDE
+Slide 2
+
+h1. A Simple PIC Image
+
+!IMAGE BEGIN PIC
+box "Client" "(CustomersController" "#send_invoice)"; arrow; 
+ellipse "Send" "Request" "(Ruby message)"; arrow; 
+box "Service" "(Email.send_email)";
+!IMAGE END
+
+* Bullet 1
+* Bullet 2
+
+!SLIDE
+Slide 3
+
+* Bullet 1
+* Bullet 2
+
