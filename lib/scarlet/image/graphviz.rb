@@ -16,9 +16,9 @@ module Scarlet
       alias :src_file :gv_file
 
       def generate_image!
-        raise "Unsupported image_format #{image_format.inspect}" unless image_format == :svg
+        # raise "Unsupported image_format #{image_format.inspect}" unless image_format == :svg
         FileUtils.mkdir_p(File.dirname(svg_file))
-        system! "#{dot_cmd} -Tsvg -o #{svg_file.inspect} #{gv_file.inspect}"
+        system! "#{dot_cmd} -T#{image_format} -o #{image_file.inspect} #{gv_file.inspect}"
       end
 
       def dot_cmd

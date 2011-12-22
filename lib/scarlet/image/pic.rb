@@ -16,9 +16,9 @@ module Scarlet
       alias :src_file :pic_file
 
       def generate_image!
-        raise "Unsupported image_format #{image_format.inspect}" unless image_format == :svg
+        # raise "Unsupported image_format #{image_format.inspect}" unless image_format == :svg
         FileUtils.mkdir_p(File.dirname(svg_file))
-        system! "#{pic2plot_cmd} #{pic_file.inspect} > #{svg_file.inspect}"
+        system! "#{pic2plot_cmd} #{pic_file.inspect} > #{image_file.inspect}"
 
         tmp = "#{svg_file}.tmp"
         File.open(svg_file) do | i |
@@ -45,7 +45,7 @@ module Scarlet
 
       def pic2plot_cmd
         @pic2plot_cmd ||=
-          "pic2plot -Tsvg --portable-output --page-size #{image_width}x#{image_height} --font-name HersheySans-Bold #{pic2plot_opts}".freeze
+          "pic2plot -T#{image_format} --portable-output --page-size #{image_width}x#{image_height} --font-name HersheySans-Bold #{pic2plot_opts}".freeze
       end
 
       def pic2plot_opts

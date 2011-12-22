@@ -56,6 +56,12 @@ module Scarlet
         freeze
     end
 
+    def image_latex
+      @image_latex ||=
+        "\\includegraphics{#{image_file}}".
+        freeze
+    end
+
     def image_path
       @image_path ||=
         image_file.sub(Regexp.new("^#{output_dir}/"), '').freeze
