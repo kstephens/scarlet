@@ -4,6 +4,7 @@ module Scarlet
   module Runner
     def self.go!(argv)
       options = { :format => :html }
+      generate = nil
 
       OptionParser.new do |opts|
         opts.banner = <<-EOF
@@ -23,7 +24,7 @@ EOF
         end
 
         opts.on "-g", "--generate DEST", "Generate javascript and stylesheet files" do |path|
-          Scarlet::Generator.files(output_dir = path)
+          generate = path
         end
 
         opts.on "-d", "--directory DEST", "Output directory" do |path|
@@ -59,9 +60,12 @@ EOF
         case options[:format]
         when :html
           output_file = options[:output_file] ||= "#{options[:output_dir]}/index.html"
+          output_dir  = options[:output_dir]  || File.dirname(options[:output_file])
+          generate  ||= output_dir
           out = File.open(output_file, "w+")
           $stderr.puts "+ Generating #{output_file}"
         end
+        Scarlet::Generator.files(generate) if generate
         out ||= $stdout
         out.puts slideshow.render
         out.close if out != $stdout
