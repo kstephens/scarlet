@@ -53,24 +53,28 @@ EOF
         end
       end
 
-      if argv[0]
-        file = File.read(argv[0])
+      if input_file = argv[0]
+        file = File.read(input_file)
         options[:output_dir] ||= argv[0].sub(/\.textile$/, '')
         slideshow = Scarlet::Slideshow.new(file, options)
         case options[:format]
         when :html
           output_file = options[:output_file] ||= "#{options[:output_dir]}/index.html"
-          output_dir  = options[:output_dir]  || File.dirname(options[:output_file])
-          generate  ||= output_dir
-          out = File.open(output_file, "w+")
-          $stderr.puts "+ Generating #{output_file}" if options[:verbose]
+        when :latex, :pdf
+          output_file = options[:output_file] ||= input_file.sub(/\.textile$/, ".#{options[:format]}")
         end
+        if output_file
+          output_dir  = options[:output_dir]  || File.dirname(options[:output_file])
+          generate  ||= output_dir if options[:format] == :html
+          out = File.open(output_file, "w+")
+        end
+        $stderr.puts "+ Generating #{output_file}" if output_file && options[:verbose]
         Scarlet::Generator.files(generate) if generate
         out ||= $stdout
         out.puts slideshow.render
         out.close if out != $stdout
         $stderr.puts "+ DONE." if options[:verbose]
-        system("set +x; open #{output_file.inspect}") if ENV['SCARLET_OPEN_HTML'] && options[:format] == :html
+        system("set +x; open #{output_file.inspect}") if output_file && ENV['SCARLET_OPEN_OUTPUT']
       end
     end
   end

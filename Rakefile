@@ -29,8 +29,10 @@ end
 
 desc "Run scarlet on example/*.textile."
 task :example do
-  Dir['example/*.textile'].each do | src |
-    sh "bin/scarlet -v #{src}"
+  [ :html, :latex, :pdf ].each do | format |
+    Dir['example/*.textile'].each do | src |
+      sh "bin/scarlet -f #{format} -v #{src}"
+    end
   end
 end
 
