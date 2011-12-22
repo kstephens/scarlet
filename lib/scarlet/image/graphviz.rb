@@ -5,9 +5,7 @@ module Scarlet
     class Graphviz < self
       attr_accessor :gv_file
 
-      def css_class
-        @css_class ||= :dot
-      end
+      def css_class_default; :dot; end
 
       def gv_file
         @gv_file ||=
@@ -22,13 +20,11 @@ module Scarlet
       end
 
       def dot_cmd
-        @dot_cmd ||=
-          "dot #{dot_opts}".freeze
+        "dot #{dot_opts}"
       end
 
       def dot_opts
-        @dot_opts ||=
-          @options[:graphviz_opts] || ""
+        @options[:graphviz_opts] || ""
       end
 
       def src_document

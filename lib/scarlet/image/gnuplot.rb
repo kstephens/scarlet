@@ -5,9 +5,7 @@ module Scarlet
     class Gnuplot < self
       attr_accessor :gp_file
 
-      def css_class
-        @css_class ||= :gnuplot
-      end
+      def css_class_default; :gnuplot; end
 
       def gp_file
         @gp_file ||=
@@ -22,13 +20,11 @@ module Scarlet
       end
 
       def gnuplot_cmd
-        @gnuplot_cmd ||=
-          "gnuplot #{gnuplot_opts}".freeze
+        "gnuplot #{gnuplot_opts}"
       end
 
       def gnuplot_opts
-        @gnuplot_opts ||=
-          @options[:gnuplot_opts] || ""
+        @options[:gnuplot_opts] || ""
       end
 
       def src_document

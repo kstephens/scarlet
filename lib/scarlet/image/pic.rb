@@ -5,9 +5,7 @@ module Scarlet
     class Pic < self
       attr_accessor :pic_file
 
-      def css_class
-        @css_class ||= :pic
-      end
+      def css_class_default; :pic; end
 
       def pic_file
         @pic_file ||=
@@ -44,14 +42,11 @@ module Scarlet
       end
 
       def pic2plot_cmd
-        @pic2plot_cmd ||=
-          "pic2plot -T#{image_format} --portable-output --page-size #{image_width}x#{image_height} --font-name HersheySans-Bold #{pic2plot_opts}".freeze
+        "pic2plot -T#{image_format} --portable-output --page-size #{image_width}x#{image_height} --font-name HersheySans-Bold #{pic2plot_opts}"
       end
 
       def pic2plot_opts
-        @pic2plot_opts ||=
-          # "--font-size 0.01".freeze
-          "".freeze
+        options[:pic2plot_opts] || ""
       end
 
       def src_document
