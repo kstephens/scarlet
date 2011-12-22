@@ -1,9 +1,17 @@
 module Scarlet
   class Image
     attr_accessor :code, :lines, :options
-    attr_accessor :name, :title, :css_class
-    attr_accessor :output_dir, :output_format
     attr_reader :identifier
+
+    def self.option_attr *names
+      names.each do | name |
+        name = name.to_sym
+        define_method(name) { | | options[name] ||= send(:"#{name}_default") }
+        define_method(:"#{name}=") { | v | options[name] = v }
+      end
+    end
+    option_attr :name, :title, :css_class, :input_format, :output_format, :output_dir,
+    :width, :height
 
     def initialize options
       @options = options
@@ -24,28 +32,19 @@ module Scarlet
         ).freeze
     end
 
-    def title
-      @image ||=
-        "Image #{name}".freeze
-    end
-
-    def name
-      @name ||= identifier
-    end
+    def title_default; "Image #{name}"; end
+    def name_default; identifier; end
+    def css_class_default; input_format; end
 
     def src_document
       @src_document ||=
         lines.map{|l| l.sub(/^#{indentation}/, '')}.join("\n")
     end
 
-    def image_width
-      @image_width ||= (options[:width] || 800).to_i
-    end
-
-    def image_height
-      @image_height ||= (options[:height] || 600).to_i
-    end
-
+    def width_default; 800; end
+    def image_width; width.to_i; end
+    def height_default; 600; end
+    def image_height; height.to_i; end
     def aspect_ratio
       image_width.to_f / image_height.to_f
     end
@@ -61,10 +60,7 @@ module Scarlet
         image_file.sub(Regexp.new("^#{output_dir}/"), '').freeze
     end
 
-    def image_file
-      svg_file
-    end
-
+    def image_file; svg_file; end
     def ps_file
       @ps_file ||= 
         src_file.sub(/\.[^.]+$/, '.ps').freeze

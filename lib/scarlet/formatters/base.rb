@@ -54,20 +54,20 @@ module Scarlet::Formatters
     def process_image code, language, opts
       case language
       when :pic
-        opts[:input_format] = :pic
+        opts[:input_format] ||= :pic
         img = Scarlet::Image::Pic
       when :dot, :graphviz, :gv
-        opts[:input_format] = :dot
+        opts[:input_format] ||= :dot
         img = Scarlet::Image::Graphviz
       when :gnuplot, :gp
-        opts[:input_format] = :gnuplot
+        opts[:input_format] ||= :gnuplot
         img = Scarlet::Image::Gnuplot
       else
         raise "Image language #{language} is unsupported"
       end
+      opts[:output_dir] = slide.output_dir
       img = img.new(opts)
       img.code = code
-      img.output_dir = slide.output_dir
       img.render!
       img
     end
