@@ -28,8 +28,8 @@ module Scarlet::Formatters
           after = m[5]
           opts_str = m[3]
           opts = { }
-          opts_str.scan(/(\w+):(\w+)/) do | key, val |
-            opts[key.to_sym] = val
+          opts_str.scan(/(\w+)[:=](?:"([^"]*)"|(\w+))/) do | key, word, str |
+            opts[key.to_sym] = word || str
           end
           result = process_image(code, language, opts)
         else
