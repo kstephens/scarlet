@@ -11,23 +11,24 @@ module Scarlet::Formatters
     end
 
     def slide_text
+      # $stderr.puts "  ### Slide #{slide.identifier}:"
       output = ''
       input = slide.text
       until input.empty?
         m = before = after = result = nil
         case input
-        when /([\t\n])?@@@(?:\ ([a-z]+))?(.+?)@@@([\t\n])?/m
+        when /([\t\n])?@@@(?:\ ([a-z]+))?(.+?)@@@( *?[\t\n])?/m
           m = $~
+          # $stderr.puts "  Found code in:\n#{m[0]}----"
           language = (m[2] || :text).to_sym
           code = m[3]
           result = process_code(code, language)
-        when /([\t\n])?!IMAGE\s+BEGIN\s+([a-zA-Z]+)(\s+[^\n]+)?(.+?)!IMAGE\s+END(\s*[\t\n])?/m
+        when /([\t\n])?!IMAGE\s+BEGIN\s+([a-zA-Z]+)(\s+[^\n]+)?(.+?)!IMAGE\s+END( *?[\t\n])?/m
           m = $~
+          # $stderr.puts "  Found !IMAGE in:\n #{m[0]}----"
           language = ($~[2] || 'unknown-image-type').downcase.to_sym
-          code = m[4]
-          after = m[5]
-          opts_str = m[3]
-          opts = { }
+          code = m[4]; after = m[5]
+          opts_str = m[3]; opts = { }
           opts_str.scan(/(\w+)[:=](?:"([^"]*)"|(\w+))/) do | key, word, str |
             opts[key.to_sym] = word || str
           end
@@ -37,14 +38,16 @@ module Scarlet::Formatters
           input = ''
         end
         if m && result
-          output <<
+          # $stderr.puts "  Replaced with:\n#{result}----"
+          input =
             m.pre_match <<
             (before || m[1] || '') <<
             result <<
-            (after || m[4] || '')
-          input = m.post_match
+            (after  || m[4] || '') <<
+            m.post_match
         end
       end
+      # $stderr.puts "  Output #{slide.identifier}:\n#{output}----"
       output
     end
 
