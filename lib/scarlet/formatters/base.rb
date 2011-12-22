@@ -66,8 +66,10 @@ module Scarlet::Formatters
       opts[:verbose] = slide.options[:verbose]
       img = img.new(opts)
       img.code = code
-      img.render!
+      img.render! required_image_format
       img
     end
+
+    def required_image_format; :svg; end
   end
 end

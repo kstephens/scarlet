@@ -2,6 +2,7 @@ module Scarlet
   class Image
     attr_accessor :code, :lines, :options
     attr_reader :identifier
+    attr_accessor :image_format
 
     def self.option_attr *names
       names.each do | name |
@@ -59,34 +60,32 @@ module Scarlet
       @image_path ||=
         image_file.sub(Regexp.new("^#{output_dir}/"), '').freeze
     end
-
-    def image_file; svg_file; end
+    def base_file
+      @base_file ||= src_file.sub(/\.[^.]+$/, '').freeze
+    end
     def ps_file
-      @ps_file ||= 
-        src_file.sub(/\.[^.]+$/, '.ps').freeze
+      @ps_file ||= "#{base_file}.ps".freeze
     end
-
     def eps_file
-      @eps_file ||= 
-        ps_file.sub(/\.ps$/, '.eps').freeze
+      @eps_file ||= "#{base_file}.eps".freeze
     end
-
     def svg_file
-      @svg_file ||= 
-        src_file.sub(/\.[^.]+$/, '.svg').freeze
+      @svg_file ||= "#{base_file}.svg".freeze
+    end
+    def image_file
+      @image_file ||= "#{base_file}.#{image_format}".freeze
     end
 
-    def render_svg!
+    def render! image_format
+      self.image_format = image_format
       FileUtils.mkdir_p(File.dirname(src_file))
       File.open(src_file, "w+") do | out |
         # $stderr.puts "pic_document:\n#{pic_document}\n"
         out.write src_document
       end
       generate_image!
-      system "set +x; open #{svg_file.inspect}" if ENV['SCARLET_OPEN_IMAGE']
-      self
+      system "set +x; open #{image_file.inspect}" if ENV['SCARLET_OPEN_IMAGE']
     end
-    alias :render! :render_svg!
 
     def system! cmd
       _cmd = options[:verbose] ? "set -x; #{cmd}" : cmd
