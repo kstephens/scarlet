@@ -38,7 +38,7 @@ module Scarlet
             slide.title = line.gsub("!TITLE", "").strip
           else
             next unless slide
-            if ! slide.title && line =~ /^\s*h\d\.\s+(.*)$/
+            if ! slide.title && line =~ /^\s*h\d\.\s+(.+)$/
               slide.title = $1
             end
             slide.text << line
