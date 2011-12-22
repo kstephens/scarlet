@@ -24,3 +24,9 @@ task :prereqs do
   sh "gem install rtex open4 RedCloth"
 end
 
+task :example do
+  Dir['example/*.textile'].each do | src |
+    sh "bin/scarlet #{src}"
+  end
+end
+
