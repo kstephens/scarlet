@@ -17,10 +17,7 @@ module Scarlet
 
       def generate_image!
         FileUtils.mkdir_p(File.dirname(svg_file))
-        cmd = "set -x; #{gnuplot_cmd} #{gp_file.inspect}"
-        # $stderr.puts "  Generate GNUPLOT #{title.inspect} -> SVG"
-        system(cmd) or raise "Command #{cmd} failed"
-        self
+        system! "#{gnuplot_cmd} #{gp_file.inspect}"
       end
 
       def gnuplot_cmd

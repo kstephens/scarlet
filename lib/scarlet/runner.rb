@@ -63,13 +63,14 @@ EOF
           output_dir  = options[:output_dir]  || File.dirname(options[:output_file])
           generate  ||= output_dir
           out = File.open(output_file, "w+")
-          $stderr.puts "+ Generating #{output_file}"
+          $stderr.puts "+ Generating #{output_file}" if options[:verbose]
         end
         Scarlet::Generator.files(generate) if generate
         out ||= $stdout
         out.puts slideshow.render
         out.close if out != $stdout
-        $stderr.puts "+ DONE."
+        $stderr.puts "+ DONE." if options[:verbose]
+        system("set +x; open #{output_file.inspect}") if ENV['SCARLET_OPEN_HTML'] && options[:format] == :html
       end
     end
   end

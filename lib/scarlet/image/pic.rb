@@ -17,9 +17,7 @@ module Scarlet
 
       def generate_image!
         FileUtils.mkdir_p(File.dirname(svg_file))
-        cmd = "set -x; #{pic2plot_cmd} #{pic_file.inspect} > #{svg_file.inspect}"
-        # $stderr.puts "  Generate PIC #{title.inspect} -> SVG"
-        system(cmd) or raise "Command #{cmd} failed"
+        system! "#{pic2plot_cmd} #{pic_file.inspect} > #{svg_file.inspect}"
 
         tmp = "#{svg_file}.tmp"
         File.open(svg_file) do | i |

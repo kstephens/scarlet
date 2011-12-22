@@ -30,7 +30,7 @@ end
 desc "Run scarlet on example/*.textile."
 task :example do
   Dir['example/*.textile'].each do | src |
-    sh "bin/scarlet #{src}"
+    sh "bin/scarlet -v #{src}"
   end
 end
 

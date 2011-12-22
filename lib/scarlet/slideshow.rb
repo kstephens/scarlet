@@ -34,7 +34,7 @@ module Scarlet
         slide = nil
         enumerable.lines.each do |line|
           if line.include? "!SLIDE"
-            slide = Scarlet::Slide.new
+            slide = Scarlet::Slide.new(:verbose => @options[:verbose])
             slide.output_dir = output_dir
             slides << slide
             slide.classes = line.gsub("!SLIDE", "").strip

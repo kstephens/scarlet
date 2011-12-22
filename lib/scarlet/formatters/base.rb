@@ -37,15 +37,12 @@ module Scarlet::Formatters
           input = ''
         end
         if m && result
-          # $stderr.puts "m = #{m.inspect}"
           output <<
             m.pre_match <<
             (before || m[1] || '') <<
             result <<
             (after || m[4] || '')
           input = m.post_match
-          # $stderr.puts "output = #{output}"
-          # $stderr.puts "input  = #{input}"
         end
       end
       output
@@ -66,6 +63,7 @@ module Scarlet::Formatters
         raise "Image language #{language} is unsupported"
       end
       opts[:output_dir] = slide.output_dir
+      opts[:verbose] = slide.options[:verbose]
       img = img.new(opts)
       img.code = code
       img.render!

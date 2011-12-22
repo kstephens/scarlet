@@ -17,10 +17,7 @@ module Scarlet
 
       def generate_image!
         FileUtils.mkdir_p(File.dirname(svg_file))
-        cmd = "set -x; #{dot_cmd} -Tsvg -o #{svg_file.inspect} #{gv_file.inspect}"
-        # $stderr.puts "  Generate DOT #{title.inspect} -> SVG"
-        system(cmd) or raise "Command #{cmd} failed"
-        self
+        system! "#{dot_cmd} -Tsvg -o #{svg_file.inspect} #{gv_file.inspect}"
       end
 
       def dot_cmd

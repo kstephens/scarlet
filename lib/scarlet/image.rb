@@ -82,15 +82,16 @@ module Scarlet
         # $stderr.puts "pic_document:\n#{pic_document}\n"
         out.write src_document
       end
-
       generate_image!
-
-      system("open #{svg_file.inspect}") if ENV['SCARLET_OPEN_IMAGE']
-      # exit 1
-
+      system "set +x; open #{svg_file.inspect}" if ENV['SCARLET_OPEN_IMAGE']
       self
     end
     alias :render! :render_svg!
 
+    def system! cmd
+      _cmd = options[:verbose] ? "set -x; #{cmd}" : cmd
+      system(_cmd) or raise "Command #{cmd} failed"
+      self
+    end
   end
 end
