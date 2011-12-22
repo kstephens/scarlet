@@ -1,34 +1,30 @@
 module Scarlet
   class Slideshow
     attr_reader :slides, :options
-    attr_accessor :output_dir
 
     def initialize(enumerable, options={})
       @options = options
-      @output_dir = options[:output_dir]
-      formatter = options[:format].nil? ? Scarlet::Formatter.default : Scarlet::Formatter.for(options[:format]) 
+      @formatter = options[:format].nil? ? Scarlet::Formatter.default : Scarlet::Formatter.for(options[:format]) 
       @slides = slice(enumerable)
-      @slides.each { |slide| slide.format!(formatter) }
+      @slides.each { |slide| slide.format!(@formatter) }
     end
+    def output_dir; options[:output_dir]; end
 
     def render
+      template = File.read(options[:template] || @formatter.default_template)
+      result = ERB.new(template).result(binding)
       case @options[:format]
-      when :html
-        template = File.read(options[:template] || Scarlet::Formatters::HTML.default_template)
-        ERB.new(template).result(binding)
-      when :latex
-        template = File.read(options[:template] || Scarlet::Formatters::LATEX.default_template)
-        ERB.new(template).result(binding)
+      when :html, :latex
       when :pdf
-        template = File.read(options[:template] || Scarlet::Formatters::PDF.default_template)
-        Scarlet::Formatters::PDF.from_latex(ERB.new(template).result(binding))
+        result = Scarlet::Formatters::PDF.from_latex(result)
       else
-        raise "Format not supported."
+        raise "Format #{@options[:format].inspect} not supported."
       end
+      result
     end
-    
+
     private
-    
+
       def slice(enumerable)
         slides = []
         slide = nil
