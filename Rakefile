@@ -22,6 +22,8 @@ end
 
 task :prereqs do
   sh "gem install rtex open4 RedCloth"
+  sh "which pic2plot || echo 'pic2plot not found: !IMAGE PIC not supported, install gnuplot.'"
+  sh "which dot || echo 'dot not found: !IMAGE PIC not supported, install graphviz.'"
 end
 
 task :example do

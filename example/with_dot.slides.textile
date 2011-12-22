@@ -1,0 +1,29 @@
+!SLIDE
+Slide 1
+
+A Simple DOT Image
+
+!IMAGE BEGIN DOT width:800 height:600
+       digraph test123 {
+               a -> b -> c;
+               a -> {x y};
+               b [shape=box];
+               c [label="hello\nworld",color=blue,fontsize=24,
+                    fontname="Palatino-Italic",fontcolor=red,style=filled];
+               a -> z [label="hi", weight=100];
+               x -> z [label="multi-line\nlabel"];
+               edge [style=dashed,color=red];
+               b -> x;
+               {rank=same; b x}
+       }
+!IMAGE END
+
+* Bullet 1
+* Bullet 2
+
+!SLIDE
+Slide 2
+
+* Bullet 1
+* Bullet 2
+
