@@ -17,11 +17,17 @@ module Scarlet::Formatters
           language = (m[2] || :text).to_sym
           code = m[3]
           result = process_code(code, language)
-        when /([\t\n])?!IMAGE\s+BEGIN\s+([a-zA-Z]+)(.+?)!IMAGE\s+END(\s*[\t\n])?/m
+        when /([\t\n])?!IMAGE\s+BEGIN\s+([a-zA-Z]+)(\s+[^\n]+)?(.+?)!IMAGE\s+END(\s*[\t\n])?/m
           m = $~
           language = ($~[2] || 'unknown-image-type').downcase.to_sym
-          code = m[3]
-          result = process_image(code, language)
+          code = m[4]
+          after = m[5]
+          opts_str = m[3]
+          opts = { }
+          opts_str.scan(/(\w+):(\w+)/) do | key, val |
+            opts[key.to_sym] = val
+          end
+          result = process_image(code, language, opts)
         else
           output << input
           input = ''
@@ -41,14 +47,14 @@ module Scarlet::Formatters
       output
     end
 
-    def process_image code, language
+    def process_image code, language, opts
       case language
       when :pic
         img = Scarlet::Image::Pic
       else
         raise "Image language #{language} is unsupported"
       end
-      img = img.new
+      img = img.new(opts)
       img.code = code
       img.output_dir = slide.output_dir
       img.render!

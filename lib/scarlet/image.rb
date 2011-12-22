@@ -1,11 +1,12 @@
 module Scarlet
   class Image
-    attr_accessor :code, :lines
+    attr_accessor :code, :lines, :options
     attr_accessor :name, :title, :css_class
     attr_accessor :output_dir
     attr_reader :identifier
 
-    def initialize
+    def initialize options
+      @options = options
       @@counter ||= 0
       @identifier = "image-#{@@counter += 1}".freeze
     end
@@ -37,19 +38,21 @@ module Scarlet
         lines.map{|l| l.sub(/^#{indentation}#/, '')}.join("\n")
     end
 
-    def image_size
+    def image_width
+      @image_width ||= (options[:width] || 800).to_i
     end
 
-=begin
-    def output_dir
-      @output_dir ||=
-        ".scarlet".freeze
+    def image_height
+      @image_height ||= (options[:height] || 600).to_i
     end
-=end
+
+    def aspect_ratio
+      image_width.to_f / image_height.to_f
+    end
 
     def image_html
       @image_html ||=
-        %Q{<object class="image svg #{css_class}" data="#{image_path}" width="90%" height="67%" ></object>}.
+        %Q{<object class="image svg #{css_class}" data="#{image_path}" width="90%" ></object>}.
         freeze
     end
 
@@ -94,7 +97,7 @@ module Scarlet
             case l
             when /^<svg /
               # l.sub!(/ width="[^"]+"/, '')
-              l.sub!(/( height=")([\d.]+)(\w+)(")/) { | m | "#{$1}#{$2.to_i * 3 / 4}#{$3}#{$4}" }
+              l.sub!(/( height=")([\d.]+)(\w+)(")/) { | m | "#{$1}#{$2.to_f / aspect_ratio}#{$3}#{$4}" }
               l.sub!(/ preserveAspectRatio="[^"]+"/i, ' preserveAspectRatio="xMinYMin"')
             #when /^<rect id="background" /
             #  l = EMPTY_STRING

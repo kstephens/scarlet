@@ -13,7 +13,7 @@ module Scarlet::Formatters
       "<notextile><div class=\"code\">" + Scarlet::Highlighter.run(code, :format => "html", :lexer => language) + "</div></notextile>"
     end
 
-    def process_image code, language
+    def process_image code, language, opts
       img = super
       "<notextile>#{img.image_html}</notextile>"
     end

@@ -25,7 +25,7 @@ module Scarlet
 
       def pic2plot_cmd
         @pic2plot_cmd ||=
-          "pic2plot -Tsvg --portable-output --page-size 800x600 --font-name HersheySans-Bold #{pic2plot_opts}".freeze
+          "pic2plot -Tsvg --portable-output --page-size #{image_width}x#{image_height} --font-name HersheySans-Bold #{pic2plot_opts}".freeze
       end
 
       def pic2plot_opts
@@ -35,9 +35,11 @@ module Scarlet
       end
 
       def src_document
+        width = 7.75
+        height = width / aspect_ratio
         @src_document ||=
           <<"END"
-.PS 7.75i 7.75i
+.PS #{width}i #{height}i
 #{super}
 .PE
 END

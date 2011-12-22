@@ -10,7 +10,7 @@ Slide 2
 
 h1. A Simple PIC Image
 
-!IMAGE BEGIN PIC
+!IMAGE BEGIN PIC width:800 height:400
 box "Client" "(CustomersController" "#send_invoice)"; arrow; 
 ellipse "Send" "Request" "(Ruby message)"; arrow; 
 box "Service" "(Email.send_email)";
