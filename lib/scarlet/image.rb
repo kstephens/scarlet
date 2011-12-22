@@ -52,7 +52,7 @@ module Scarlet
 
     def image_html
       @image_html ||=
-        %Q{<object class="image svg #{css_class}" data="#{image_path}" width="90%" ></object>}.
+        %Q{<object class="image svg #{css_class}" style="overflow-x: visible; overflow-y: visible;" data="#{image_path}" width="#{image_width}px" height="#{image_height}px" ></object>}.
         freeze
     end
 
@@ -96,17 +96,22 @@ module Scarlet
             l = i.readline
             case l
             when /^<svg /
-              # l.sub!(/ width="[^"]+"/, '')
-              l.sub!(/( height=")([\d.]+)(\w+)(")/) { | m | "#{$1}#{$2.to_f / aspect_ratio}#{$3}#{$4}" }
+              l.sub!(/( width=")([\d.]+)(\w+)(")/) { | m | "#{$1}#{image_width}px#{$4}" }
+              l.sub!(/( height=")([\d.]+)(\w+)(")/) { | m | "#{$1}#{image_height}px#{$4}" }
               l.sub!(/ preserveAspectRatio="[^"]+"/i, ' preserveAspectRatio="xMinYMin"')
+              l.sub!(/( viewBox=")([\d.]+)\s+([\d.]+)\s+([\d.]+)\s+([\d.]+)/i) do | m |
+                "#{$1}#{$2} #{0.5 + -0.5 / aspect_ratio} 1 #{1.0 / aspect_ratio}"
+              end
             #when /^<rect id="background" /
             #  l = EMPTY_STRING
+=begin
             when /^<g id="content" /
               l.sub!(/ transform="[^"]+"/) do | m |
                 m.sub(/(translate\()([^,]+),([^,]+)(\))/) do | m |
                   "#{$1}#{$2},#{$3.to_f - 0.25}#{$4}"
                 end
               end
+=end
             end
             o.write l
           end

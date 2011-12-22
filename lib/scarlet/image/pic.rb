@@ -35,7 +35,7 @@ module Scarlet
       end
 
       def src_document
-        width = 7.75
+        width = 4
         height = width / aspect_ratio
         @src_document ||=
           <<"END"
