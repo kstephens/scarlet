@@ -20,6 +20,27 @@ module Scarlet
         cmd = "set -x; #{pic2plot_cmd} #{pic_file.inspect} > #{svg_file.inspect}"
         # $stderr.puts "  Generate PIC #{title.inspect} -> SVG"
         system(cmd) or raise "Command #{cmd} failed"
+
+        tmp = "#{svg_file}.tmp"
+        File.open(svg_file) do | i |
+          File.open(tmp, "w+") do | o |
+            until i.eof?
+              l = i.readline
+              case l
+              when /^<svg /
+                l.sub!(/( width=")([\d.]+)(\w+)(")/) { | m | "#{$1}#{image_width}px#{$4}" }
+                l.sub!(/( height=")([\d.]+)(\w+)(")/) { | m | "#{$1}#{image_height}px#{$4}" }
+                l.sub!(/ preserveAspectRatio="[^"]+"/i, ' preserveAspectRatio="xMinYMin"')
+                l.sub!(/( viewBox=")([\d.]+)\s+([\d.]+)\s+([\d.]+)\s+([\d.]+)/i) do | m |
+                  "#{$1}#{$2} #{0.5 + -0.5 / aspect_ratio} 1 #{1.0 / aspect_ratio}"
+                end
+              end
+              o.write l
+            end
+            o.write i.read
+          end
+        end
+        File.rename(tmp, svg_file)
         self
       end
 
