@@ -1,5 +1,4 @@
 require 'RedCloth'
-require 'scarlet/image/pic'
 
 module Scarlet::Formatters
   class HTML

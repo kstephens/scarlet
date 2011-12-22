@@ -1,3 +1,6 @@
+require 'scarlet/image/pic'
+require 'scarlet/image/graphviz'
+
 module Scarlet::Formatters
   module Base
     attr_accessor :slide
@@ -50,7 +53,11 @@ module Scarlet::Formatters
     def process_image code, language, opts
       case language
       when :pic
+        opts[:input_format] = :pic
         img = Scarlet::Image::Pic
+      when :dot, :graphviz, :gv
+        opts[:input_format] = :dot
+        img = Scarlet::Image::Graphviz
       else
         raise "Image language #{language} is unsupported"
       end

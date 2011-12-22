@@ -2,7 +2,7 @@ module Scarlet
   class Image
     attr_accessor :code, :lines, :options
     attr_accessor :name, :title, :css_class
-    attr_accessor :output_dir
+    attr_accessor :output_dir, :output_format
     attr_reader :identifier
 
     def initialize options
