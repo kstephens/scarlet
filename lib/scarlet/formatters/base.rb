@@ -1,5 +1,6 @@
 require 'scarlet/image/pic'
 require 'scarlet/image/graphviz'
+require 'scarlet/image/gnuplot'
 
 module Scarlet::Formatters
   module Base
@@ -58,6 +59,9 @@ module Scarlet::Formatters
       when :dot, :graphviz, :gv
         opts[:input_format] = :dot
         img = Scarlet::Image::Graphviz
+      when :gnuplot, :gp
+        opts[:input_format] = :gnuplot
+        img = Scarlet::Image::Gnuplot
       else
         raise "Image language #{language} is unsupported"
       end

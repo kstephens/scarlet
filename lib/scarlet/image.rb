@@ -19,7 +19,7 @@ module Scarlet
     def indentation
       @indentation ||=
         (
-        lines.first =~ /^(\s*)#/
+        lines.first =~ /^(\s*)/
         $1 || ''
         ).freeze
     end
@@ -35,7 +35,7 @@ module Scarlet
 
     def src_document
       @src_document ||=
-        lines.map{|l| l.sub(/^#{indentation}#/, '')}.join("\n")
+        lines.map{|l| l.sub(/^#{indentation}/, '')}.join("\n")
     end
 
     def image_width
