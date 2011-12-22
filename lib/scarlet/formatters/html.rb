@@ -1,9 +1,7 @@
 require 'RedCloth'
 
 module Scarlet::Formatters
-  class HTML
-    include Scarlet::Formatters::Base
-    
+  class HTML < Base
     def text
       RedCloth.new(slide_text).to_html
     end

@@ -1,9 +1,7 @@
 require 'RedCloth'
 
 module Scarlet::Formatters
-  class LATEX
-    include Scarlet::Formatters::Base
-
+  class LATEX < Base
     def text
       RedCloth.new(slide.text).to_latex
     end

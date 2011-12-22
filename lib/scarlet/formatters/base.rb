@@ -3,7 +3,7 @@ require 'scarlet/image/graphviz'
 require 'scarlet/image/gnuplot'
 
 module Scarlet::Formatters
-  module Base
+  class Base
     attr_accessor :slide
 
     def initialize(slide)
