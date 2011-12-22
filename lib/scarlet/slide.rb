@@ -6,9 +6,8 @@ module Scarlet
 
     def initialize options
       @options = options
-      @@counter ||= 0
-      @identifier = "slide-#{@@counter}"
-      @@counter += 1
+      @@counter ||= -1 # 0-origin slide numbers
+      @identifier = "slide-#{@@counter += 1}"
       @text = ""
       @classes = ""
     end
