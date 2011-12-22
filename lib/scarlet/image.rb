@@ -51,7 +51,7 @@ module Scarlet
 
     def image_html
       @image_html ||=
-        %Q{<object class="image svg #{css_class}" style="overflow-x: visible; overflow-y: visible;" data="#{image_path}" width="#{image_width}px" height="#{image_height}px" ></object>}.
+        %Q{<object class="image image_svg image_#{css_class}" style="overflow-x: visible; overflow-y: visible;" data="#{image_path}" width="#{image_width}px" height="#{image_height}px" ></object>}.
         freeze
     end
 
