@@ -23,6 +23,15 @@ module Scarlet
           File.open(tmp, "w+") do | o |
             until i.eof?
               l = i.readline
+              if svg_transform
+                case l
+                when /^(<svg [^>]+>)/
+                  l = %Q{#{l}\n<g transform="#{svg_transform}">}
+                when /^(<\/svg>)/
+                  l = "</g>#{l}"
+                end
+              end
+
               case l
               when /^<svg /
                 l.sub!(/( width=")([\d.]+)(\w+)(")/) { | m | "#{$1}#{image_width}px#{$4}" }

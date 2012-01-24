@@ -12,7 +12,7 @@ module Scarlet
       end
     end
     option_attr :name, :title, :css_class, :input_format, :output_format, :output_dir,
-    :width, :height
+    :width, :height, :svg_transform
 
     def initialize options
       @options = options
@@ -36,6 +36,7 @@ module Scarlet
     def title_default; "Image #{name}"; end
     def name_default; identifier; end
     def css_class_default; input_format; end
+    def svg_transform_default; nil; end
 
     def src_document
       @src_document ||=
