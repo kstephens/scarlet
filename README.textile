@@ -11,7 +11,11 @@ h2. Features
 * *Syntax Highlighting*: If you have "Pygments":http://pygments.org/ installed, Scarlet will automatically highlight your code.
 * *Custom Templates*: Create and re-use your own templates for the slideshows.
 * *PDF and LaTeX Generation*: Highly experimental. Patches are welcome and very appreciated.
-* *Inline GNUPLOT, PIC and GraphViz images*: Experimental HTML/SVG support.  See example/ directory.
+* *Inline Image Generation Languages*
+** *GNUPLOT*: http://www.gnuplot.info/
+** *Pic*: http://en.wikipedia.org/wiki/Pic_language
+** *GraphViz*: http://http://www.graphviz.org/
+** See example/ directory.
 
 h2. TODO
 
@@ -69,14 +73,15 @@ Open the converted html file in your browser of choice and bedazzle your audienc
 
 h4. Keyboard Navigation:
 
-* Right/Enter/Space Bar - Forward slide
-* Left - Backward slide
+* Right/Enter/Space Bar/Page Down - Forward slide
+* Left/Page Up - Backward slide
 * # g - Jump to slide # (EG: 5g - jump to slide 5)
 * Esc - Go to the first slide
 
 h2. Contributors
 
 * *Matias Korhonen*: PDF and LaTeX generation
+* *Kurt Stephens*: Inline image generation, navigation enhancements, bug fixes
 * *Blake Smith*: Slide titles, awesome navigation, and bug fixes
 
 h2. Special Thanks
