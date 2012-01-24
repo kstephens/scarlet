@@ -23,15 +23,16 @@ module Scarlet::Formatters
           language = (m[2] || :text).to_sym
           code = m[3]
           result = process_code(code, language)
-        when /([\t\n])?!IMAGE\s+BEGIN\s+([a-zA-Z]+)(\s+[^\n]+)?(.+?)!IMAGE\s+END( *?[\t\n])?/m
+        when /([\t\n])?!IMAGE +BEGIN +([a-zA-Z]+)([ \t]+[^\n]+)?\n(.+?\n)[ \t]*!IMAGE +END( *?[\t\n])?/m
           m = $~
           # $stderr.puts "  Found !IMAGE in:\n #{m[0]}----"
-          language = ($~[2] || 'unknown-image-type').downcase.to_sym
+          language = (m[2] || 'unknown-image-type').downcase.to_sym
           code = m[4]; after = m[5]
-          opts_str = m[3]; opts = { }
+          opts_str = m[3] || ''; opts = { }
           opts_str.scan(/(\w+)[:=](?:"([^"]*)"|(\w+))/) do | key, word, str |
             opts[key.to_sym] = word || str
           end
+          # $stderr.puts "!IMAGE code::\n#{code}\n----"
           result = process_image(code, language, opts)
         else
           output << input
