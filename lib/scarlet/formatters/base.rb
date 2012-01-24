@@ -17,7 +17,7 @@ module Scarlet::Formatters
       until input.empty?
         m = before = after = result = nil
         case input
-        when /([\t\n])?@@@(?:\ ([a-z]+))?(.+?)@@@( *?[\t\n])?/m
+        when /([\t\n])?@@@(?:\ ([a-z]+))?(.+?)@@@( *?[\t\n])?/mi
           m = $~
           # $stderr.puts "  Found code in:\n#{m[0]}----"
           language = (m[2] || :text).to_sym
