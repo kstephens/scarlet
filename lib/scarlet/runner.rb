@@ -55,6 +55,7 @@ EOF
 
       if input_file = argv[0]
         file = File.read(input_file)
+        options[:input_file] = input_file
         options[:output_dir] ||= argv[0].sub(/\.textile$/, '')
         slideshow = Scarlet::Slideshow.new(file, options)
         case options[:format]

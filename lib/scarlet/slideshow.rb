@@ -1,10 +1,22 @@
 module Scarlet
   class Slideshow
-    attr_reader :slides, :options
+    attr_reader :input_file, :erb_input, :slides, :options
 
     def initialize(enumerable, options={})
       @options = options
-      @formatter = options[:format].nil? ? Scarlet::Formatter.default : Scarlet::Formatter.for(options[:format]) 
+      @formatter = options[:format].nil? ? Scarlet::Formatter.default : Scarlet::Formatter.for(options[:format])
+      @input_file = options[:input_file]
+
+      @erb_input = options[:erb_input]
+      if @erb_input.nil?
+        @erb_input = enumerable.gsub!(/<!-- *ERB *-->/mi, '') || @input_file =~ /\.erb$/
+      end
+      if @erb_input
+        enumerable = ERB.new(enumerable).result(binding)
+      end
+      # "":some_link.html => "some_link.html":some_link.html
+      enumerable.gsub!(/\b"":(\S+\b)/){|m| %Q{"#{$1}":#{$1}}}
+
       @slides = slice(enumerable)
       @slides.each { |slide| slide.format!(@formatter) }
     end
