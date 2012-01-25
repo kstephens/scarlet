@@ -80,9 +80,9 @@ h4. Keyboard Navigation:
 
 h2. Contributors
 
-* *Matias Korhonen*: PDF and LaTeX generation
-* *Kurt Stephens*: Inline image generation, navigation enhancements, bug fixes
-* *Blake Smith*: Slide titles, awesome navigation, and bug fixes
+* *Matias Korhonen*: PDF and LaTeX generation.
+* *Kurt Stephens*: Inline image generation, navigation enhancements, slide numbers, bug fixes.
+* *Blake Smith*: Slide titles, awesome navigation, and bug fixes.
 
 h2. Special Thanks
 

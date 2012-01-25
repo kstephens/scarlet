@@ -1,15 +1,18 @@
 module Scarlet
   class Slide
+    attr_accessor :slideshow
     attr_accessor :classes, :text, :title
     attr_reader :identifier
-    attr_accessor :options, :output_dir
+    attr_accessor :options, :output_dir, :slide_number
 
     def initialize options
       @options = options
-      @@counter ||= -1 # 0-origin slide numbers
-      @identifier = "slide-#{@@counter += 1}"
       @text = ""
       @classes = ""
+    end
+
+    def identifier
+      @identifier ||= "slide-#{slide_number - 1}"
     end
 
     def format!(formatter)

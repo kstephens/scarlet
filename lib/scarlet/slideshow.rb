@@ -17,9 +17,18 @@ module Scarlet
       enumerable.gsub!(/\b"":(\S+\b)/){|m| %Q{"#{$1}":#{$1}}}
 
       @slides = slice(enumerable)
-      @slides.each { |slide| slide.format!(@formatter) }
+      slide_number = 0
+      @slides.each do |slide|
+        slide.slideshow = self
+        slide.slide_number = (slide_number += 1)
+        slide.format!(@formatter)
+      end
     end
     def output_dir; options[:output_dir]; end
+
+    def n_slides
+      @slides.size
+    end
 
     def render
       template = File.read(options[:template] || @formatter.default_template)

@@ -1,0 +1,13 @@
+#slide { 
+  position: relative;
+}
+#slide_number {
+  position: absolute; 
+  right: 0; 
+  bottom: 0; 
+  width: 4em; 
+  height: 1em; 
+  text-align: center; 
+  line-height: 1em;
+  font-size: 75%;
+}
