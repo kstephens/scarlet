@@ -1,3 +1,4 @@
+require 'RedCloth'
 require 'scarlet/image/pic'
 require 'scarlet/image/graphviz'
 require 'scarlet/image/gnuplot'
@@ -8,6 +9,10 @@ module Scarlet::Formatters
 
     def initialize(slide)
       @slide = slide
+    end
+
+    def redcloth_text
+      @redcloth_text ||= RedCloth.new(slide_text)
     end
 
     def slide_text

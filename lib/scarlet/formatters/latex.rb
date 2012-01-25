@@ -1,9 +1,7 @@
-require 'RedCloth'
-
 module Scarlet::Formatters
   class LATEX < Base
     def text
-      RedCloth.new(slide_text).to_latex
+      redcloth_text.to_latex
     end
 
     def process_code code, language

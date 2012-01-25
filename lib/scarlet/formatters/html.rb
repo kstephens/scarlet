@@ -1,9 +1,7 @@
-require 'RedCloth'
-
 module Scarlet::Formatters
   class HTML < Base
     def text
-      RedCloth.new(slide_text).to_html
+      redcloth_text.to_html
     end
 
     def process_code code, language
