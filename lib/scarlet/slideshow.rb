@@ -14,7 +14,7 @@ module Scarlet
         enumerable = ERB.new(enumerable).result(binding)
       end
       # "":some_link.html => "some_link.html":some_link.html
-      enumerable.gsub!(/\b"":(\S+\b)/){|m| %Q{"#{$1}":#{$1}}}
+      enumerable.gsub!(/(\s)"":(\S+)/){|m| %Q{#{$1}"#{$2}":#{$2}}}
 
       @slides = slice(enumerable)
       slide_number = 0
