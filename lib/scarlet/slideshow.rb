@@ -41,13 +41,14 @@ module Scarlet
         slides = []
         slide = nil
         enumerable.lines.each do |line|
-          if line.include? "!SLIDE"
+          case line
+          when /^\s*!SLIDE\s*/
             slide = Scarlet::Slide.new(:verbose => @options[:verbose])
+            slide.classes = $'.strip
             slide.output_dir = output_dir
             slides << slide
-            slide.classes = line.gsub("!SLIDE", "").strip
-          elsif line.include? "!TITLE"
-            slide.title = line.gsub("!TITLE", "").strip
+          when /^\s*!TITLE\s*/
+            slide.title = $'.strip
           else
             next unless slide
             if ! slide.title && line =~ /^\s*h\d\.\s+(.+)$/
