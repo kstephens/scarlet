@@ -7,9 +7,8 @@ module Scarlet
       @formatter = options[:format].nil? ? Scarlet::Formatter.default : Scarlet::Formatter.for(options[:format])
       @input_file = options[:input_file]
 
-      @erb_input = options[:erb_input]
-      if @erb_input.nil?
-        @erb_input = enumerable.gsub!(/<!-- *ERB *-->/mi, '') || @input_file =~ /\.erb$/
+      if (@erb_input = options[:erb_input]).nil?
+        @erb_input = enumerable.sub!(/\A\s*<!-- *ERB *-->/mi, '') || @input_file =~ /\.erb$/
       end
       if @erb_input
         enumerable = ERB.new(enumerable).result(binding)
