@@ -18,7 +18,7 @@
       <div class="slide <%= slide.classes %>" style="position: relative;" >
         <div title="<%= slide.title %>" id="<%= slide.identifier %>" class="content">
 <%= slide.text %>
-          <div class="slide_number" style="position: absolute; right: 0; bottom: 0; width: 4em; height: 1em; text-align: center; line-height: 1em;"><%= slide.slide_number %>/<%= slide.slideshow.n_slides %></div>
+          <div class="slide_number" style="position: absolute; right: 0; bottom: 0; width: 4em; height: 1em; text-align: center; line-height: 1em;"><a href="http://github.com/kstephens/scarlet" alt="Powered by Scarlet" title="Powered by Scarlet"><%= slide.slide_number %>/<%= slide.slideshow.n_slides %></a></div>
         </div>
      </div>
 <% end %>
