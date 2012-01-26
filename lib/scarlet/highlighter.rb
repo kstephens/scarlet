@@ -1,4 +1,5 @@
 require 'rubygems'
+gem 'open4'
 require 'open4'
 
 module Scarlet
