@@ -5,7 +5,9 @@ module Scarlet::Formatters
     end
 
     def process_code code, language
-      "<notextile><div class=\"code code_#{language}\">" + Scarlet::Highlighter.run(code, :format => "html", :lexer => language) + "</div></notextile>"
+      "<notextile><div class=\"code code_#{language}\">" <<
+        Scarlet::Highlighter.run(code, :format => "html", :lexer => language) <<
+        "</div></notextile>"
     end
 
     def process_image code, language, opts
