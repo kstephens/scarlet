@@ -1,3 +1,7 @@
 pkg/
 spec/
 *.kpf
+example/*.slides/
+example/*.latex
+example/*.pdf
+

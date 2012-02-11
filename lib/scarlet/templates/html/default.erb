@@ -1,29 +1,28 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-	<title><%= @slides.first ? @slides.first.title : "Slides" %></title>
-	<link href="./stylesheets/slides.css" media="screen" rel="stylesheet" charset="utf-8" type="text/css" />
-	<link href="./stylesheets/syntax_friendly.css" media="screen" rel="stylesheet" charset="utf-8" type="text/css" />
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  <title><%= @slides.first ? @slides.first.title : "Slides" %></title>
+  <link href="./stylesheets/slides.css" media="screen" rel="stylesheet" charset="utf-8" type="text/css" />
+  <link href="./stylesheets/slide_number.css" media="screen" rel="stylesheet" charset="utf-8" type="text/css" />
+  <link href="./stylesheets/syntax_friendly.css" media="screen" rel="stylesheet" charset="utf-8" type="text/css" />
   <script src="./javascripts/jquery.min.js" type="text/javascript"></script>
   <script src="./javascripts/jquery.easing.js" type="text/javascript"></script>
   <script src="./javascripts/jquery.hash-changed.js" type="text/javascript"></script>
   <script src="./javascripts/slides.js" type="text/javascript"></script>
 </head>
-
 <body>
-	<div id="slides">
-		<div id="track">
-			<% for slide in @slides %>
-				<div class="<%= slide.classes %>">
-          <div title="<%= slide.title %>" id="<%= slide.identifier %>" class="content">
-						<%= slide.text %>
-					</div>
-				</div>
-			<% end %>
-		</div>
-	</div>
+  <div id="slides">
+    <div id="track">
+<% for slide in @slides %>
+      <div class="slide <%= slide.classes %>" style="position: relative;" >
+        <div title="<%= slide.title %>" id="<%= slide.identifier %>" class="content">
+<%= slide.text %>
+          <div class="slide_number" style="position: absolute; right: 0; bottom: 0; width: 4em; height: 1em; text-align: center; line-height: 1em;"><a href="http://github.com/kstephens/scarlet" alt="Powered by Scarlet" title="Powered by Scarlet"><%= slide.slide_number %>/<%= slide.slideshow.n_slides %></a></div>
+        </div>
+     </div>
+<% end %>
+    </div>
+  </div>
 </body>
 </html>

@@ -20,7 +20,21 @@ rescue LoadError
   puts "Jeweler not available. Install it with: sudo gem install technicalpickles-jeweler -s http://gems.github.com"
 end
 
+desc "Install/check for prerequisites."
 task :prereqs do
   sh "gem install rtex open4 RedCloth"
+  sh "which pic2plot || echo 'pic2plot not found: !IMAGE PIC not supported, install gnuplot plotutils.'"
+  sh "which dot || echo 'dot not found: !IMAGE PIC not supported, install graphviz.'"
 end
+
+desc "Run scarlet on example/*.textile."
+task :example do
+  [ :html, :latex, :pdf ].each do | format |
+    Dir['example/*.textile'].each do | src |
+      sh "bin/scarlet -f #{format} -v #{src}"
+    end
+  end
+end
+
+task :default => :example
 

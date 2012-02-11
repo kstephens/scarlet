@@ -4,6 +4,7 @@ module Scarlet
   module Runner
     def self.go!(argv)
       options = { :format => :html }
+      generate = nil
 
       OptionParser.new do |opts|
         opts.banner = <<-EOF
@@ -23,8 +24,20 @@ EOF
         end
 
         opts.on "-g", "--generate DEST", "Generate javascript and stylesheet files" do |path|
-          Scarlet::Generator.files(path)
-          exit
+          generate = path
+        end
+
+        opts.on "-d", "--directory DEST", "Output directory" do |path|
+          options[:output_dir] = path
+        end
+
+        opts.on "-v", "--verbose", "Verbose output" do |path|
+          options[:verbose] = 1
+        end
+
+        opts.on "-o", "--output DEST", "Output file" do |path|
+          options[:output_dir] = File.dirname(path)
+          options[:output_file] = path
         end
 
         opts.on "-h", "--help", "Show this message" do
@@ -40,9 +53,30 @@ EOF
         end
       end
 
-      file = File.read(argv[0])
-      slideshow = Scarlet::Slideshow.new(file, options)
-      puts slideshow.render
+      if input_file = argv[0]
+        file = File.read(input_file)
+        options[:input_file] = input_file
+        options[:output_dir] ||= argv[0].sub(/\.textile$/, '')
+        slideshow = Scarlet::Slideshow.new(file, options)
+        case options[:format]
+        when :html
+          output_file = options[:output_file] ||= "#{options[:output_dir]}/index.html"
+        when :latex, :pdf
+          output_file = options[:output_file] ||= input_file.sub(/\.textile$/, ".#{options[:format]}")
+        end
+        if output_file
+          output_dir  = options[:output_dir]  || File.dirname(options[:output_file])
+          generate  ||= output_dir if options[:format] == :html
+          out = File.open(output_file, "w+")
+        end
+        $stderr.puts "+ Generating #{output_file}" if output_file && options[:verbose]
+        Scarlet::Generator.files(generate) if generate
+        out ||= $stdout
+        out.puts slideshow.render
+        out.close if out != $stdout
+        $stderr.puts "+ DONE." if options[:verbose]
+        system("set +x; open #{output_file.inspect}") if output_file && ENV['SCARLET_OPEN_OUTPUT']
+      end
     end
   end
 end
