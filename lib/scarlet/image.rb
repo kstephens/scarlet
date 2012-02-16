@@ -1,3 +1,5 @@
+require 'fileutils'
+
 module Scarlet
   class Image
     attr_accessor :code, :lines, :options
