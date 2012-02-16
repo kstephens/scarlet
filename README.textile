@@ -65,7 +65,7 @@ h3. Step 4 – Convert your slideshow file to XHTML
 
 In the previously created folder:
 
-<pre>scarlet slideshow.textile > slideshow.html</pre>
+<pre>scarlet slideshow.textile # Generates slideshow/index.html</pre>
 
 h3. Step 5 - Start the Show!
 
@@ -80,8 +80,8 @@ h4. Keyboard Navigation:
 
 h2. Contributors
 
-* *Matias Korhonen*: PDF and LaTeX generation.
 * *Kurt Stephens*: Inline image generation, navigation enhancements, slide numbers, bug fixes.
+* *Matias Korhonen*: PDF and LaTeX generation.
 * *Blake Smith*: Slide titles, awesome navigation, and bug fixes.
 
 h2. Special Thanks

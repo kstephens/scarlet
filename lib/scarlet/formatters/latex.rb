@@ -5,7 +5,9 @@ module Scarlet::Formatters
     end
 
     def process_code code, language
-      "<notextile>" << Scarlet::Highlighter.run(code, :format => "latex", :lexer => language, :arguments => "-P verboptions='fontfamily=lcmtt'") << "</notextile>"
+      "<notextile>" <<
+        Scarlet::Highlighter.run(code, :format => "latex", :lexer => language, :arguments => "-P verboptions='fontfamily=lcmtt'") <<
+        "</notextile>"
     end
 
     def process_image *args
