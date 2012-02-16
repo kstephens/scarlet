@@ -56,13 +56,13 @@ EOF
       if input_file = argv[0]
         file = File.read(input_file)
         options[:input_file] = input_file
-        options[:output_dir] ||= argv[0].sub(/\.textile$/, '')
+        options[:output_dir] ||= argv[0].sub(/\.textile(\.erb)?$/, '')
         slideshow = Scarlet::Slideshow.new(file, options)
         case options[:format]
         when :html
           output_file = options[:output_file] ||= "#{options[:output_dir]}/index.html"
         when :latex, :pdf
-          output_file = options[:output_file] ||= input_file.sub(/\.textile$/, ".#{options[:format]}")
+          output_file = options[:output_file] ||= input_file.sub(/\.textile(\.erb)?$/, ".#{options[:format]}")
         end
         if output_file
           output_dir  = options[:output_dir]  || File.dirname(options[:output_file])
