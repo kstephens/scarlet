@@ -1,8 +1,4 @@
 source "http://rubygems.org"
-# Add dependencies required to use your gem here.
-# Example:
-#   gem "activesupport", ">= 2.3.5"
-  gem 'open4', '~> 1.3.0'
   gem 'RedCloth', '~> 4.2.9'
   gem 'rtex', '~> 2.1.1'
 #  gem 'rcov' # Ruby 1.9 is not supported. Please switch to simplecov

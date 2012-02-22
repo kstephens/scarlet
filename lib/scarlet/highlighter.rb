@@ -1,6 +1,4 @@
-require 'rubygems'
-gem 'open4'
-require 'open4'
+require 'open3'
 
 module Scarlet
   module Highlighter
@@ -8,10 +6,16 @@ module Scarlet
       options[:format] ||= "html"
       options[:lexer] ||= "text"
       options[:arguments] ||= ""
-      pid, stdin, stdout, stderr = Open4.popen4("pygmentize -f #{options[:format]} -l #{options[:lexer]} #{options[:arguments]}")
-      stdin.puts(text)
-      stdin.close
-      stdout.read.strip
+      verbose = options.delete(:verbose)
+      cmd = "pygmentize -f #{options[:format]} -l #{options[:lexer]} #{options[:arguments]}"
+      $stderr.puts "+ #{cmd}" if verbose
+      result = nil
+      Open3.popen3(cmd) do | stdin, stdout, *something |
+        stdin.puts(text)
+        stdin.close
+        result = stdout.read.strip
+      end
+      result
     end
   end
 end
