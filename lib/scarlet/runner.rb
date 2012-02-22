@@ -1,4 +1,5 @@
 require 'optparse'
+require 'shellwords'
 
 module Scarlet
   module Runner
@@ -10,10 +11,13 @@ module Scarlet
         opts.banner = <<-EOF
 Usage:
   scarlet [options] file
-  scarlet --generate destination
 EOF
 
         argv = ["-h"] if argv.empty?
+        if env_opts = ENV['SCARLET_OPTS'] and ! env_opts.empty?
+          argv = Shellwords.shellwords(env_opts) + argv
+          $stderr.puts "  #{$0} #{argv * " "}"
+        end
 
         opts.on "-f", "--format FORMAT", "Format to generate" do |format|
           options[:format] = format.to_sym
@@ -32,7 +36,8 @@ EOF
         end
 
         opts.on "-v", "--verbose", "Verbose output" do |path|
-          options[:verbose] = 1
+          options[:verbose] ||= 0
+          options[:verbose] += 1
         end
 
         opts.on "-o", "--output DEST", "Output file" do |path|
