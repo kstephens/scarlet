@@ -1,3 +1,4 @@
+require 'rubygems'
 require 'scarlet/slideshow'
 require 'scarlet/slide'
 require 'scarlet/highlighter'
