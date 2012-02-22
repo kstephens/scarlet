@@ -1,3 +1,4 @@
+gem 'RedCloth'
 require 'RedCloth'
 require 'scarlet/image/pic'
 require 'scarlet/image/graphviz'
