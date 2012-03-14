@@ -1,6 +1,7 @@
 require 'rubygems'
 require 'optparse'
 require 'shellwords'
+require 'fileutils'
 
 module Scarlet
   module Runner
@@ -72,6 +73,7 @@ EOF
         end
         if output_file
           output_dir  = options[:output_dir]  || File.dirname(options[:output_file])
+          FileUtils.mkdir_p(output_dir)
           generate  ||= output_dir if options[:format] == :html
           out = File.open(output_file, "w+")
         end
